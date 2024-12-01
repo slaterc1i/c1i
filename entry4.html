@@ -136,19 +136,27 @@
       <!-- // Set initial height to match the first image
       images[0].addEventListener('load', () => showImage(index));
       --->
+    
+        images.forEach(image => {
+          image.addEventListener('load', () => {
+            updateCarouselHeight();
+            showImage(index);
+          });
+        });
 
-      prevButton.addEventListener('click', () => {
-        index = (index - 1 + images.length) % images.length;
-        showImage(index);
+        prevButton.addEventListener('click', () => {
+          index = (index - 1 + images.length) % images.length;
+          showImage(index);
+        });
+
+        nextButton.addEventListener('click', () => {
+          index = (index + 1) % images.length;
+          showImage(index);
+        });
+
+        window.addEventListener('resize', () => showImage(index));
       });
-
-      nextButton.addEventListener('click', () => {
-        index = (index + 1) % images.length;
-        showImage(index);
-      });
-
-      window.addEventListener('resize', () => showImage(index));
-    });
+    };
   </script>
                     <p>
                         <div class="cat-rock-info">
