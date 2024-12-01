@@ -7,36 +7,47 @@
                 font-family: 'Kosugi Maru';font-size: 22px;
                 background-color: steelblue;
               }
-            .carousel {
-              width: 100%;
-              max-width: 600px;
-              margin: 0 auto;
-              overflow: hidden;
-            }
-            .carousel-images {
-              display: flex;
-              transition: transform 1s ease;
-            }
-            .carousel-images img {
-              width: 100%;
-              max-width: 600px;
-            }
-            .dots {
-              text-align: center;
-              margin-top: 10px;
-            }
-            .dot {
-              display: inline-block;
-              height: 10px;
-              width: 10px;
-              margin: 0 5px;
-              border-radius: 50%;
-              background-color: #bbb;
-              cursor: pointer;
-            }
-            .active {
-              background-color: #717171;
-            }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .carousel-wrapper {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin: 20px auto;
+    }
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      overflow: hidden;
+    }
+    .carousel {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .carousel img {
+      flex-shrink: 0;
+      width: 100%;
+      height: auto;
+    }
+    .buttons {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+    .button {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
              </style>
               <title>
                 v4
@@ -50,52 +61,73 @@
                         a few bouldering spots you can find in central park to get you started-- <em>just climb.</em>
                     </h3>
                     
-  <div class="carousel">
-    <div class="carousel-images">
-      <img src="imgs/cat-rock-dudes-climbing.jpg" alt="some dudes climbing at Cat Rock">
-      <img src="imgs/cat-rock-face-routes.jpg" alt="bright red lines overlayed on Cat Rock face depicting routes">
-      <img src="imgs/cat-rock-on-approach.jpg" alt="what the approach to Cat Rock looks like from the trail">
-      <img src="imgs/cat-rock-view.jpg" alt="view of New York City from the top of Cat Rock">
+  <div class="carousel-wrapper">
+    <!-- cat-rock -->
+    <div class="carousel-container">
+      <div class="carousel">
+        <img src="imgs/cat-rock-dudes-climbing.jpg" alt="some dudes climbing at Cat Rock">
+        <img src="imgs/cat-rock-face-routes.jpg" alt="bright red lines overlayed on Cat Rock face depicting routes">
+        <img src="imgs/cat-rock-on-approach.jpg" alt="what the approach to Cat Rock looks like from the trail">
+        <img src="imgs/cat-rock-view.jpg" alt="view of New York City from the top of Cat Rock">
+      </div>
+      <div class="buttons">
+        <button class="button prev">❮</button>
+        <button class="button next">❯</button>
+      </div>
+    </div>
+
+    <!-- rat-rock -->
+    <div class="carousel-container">
+      <div class="carousel">
+        <img src="imgs/rat-rock-group-climbing.jpg" alt="a group of people watching someone ascend Rat Rock">
+        <img src="imgs/rat-rock-routes.jpg" alt="series of colorful lines overlayed on Rat Rock face depicting routes">
+      </div>
+      <div class="buttons">
+        <button class="button prev">❮</button>
+        <button class="button next">❯</button>
+      </div>
+    </div>
+
+    <!-- worthless-boulder -->
+    <div class="carousel-container">
+      <div class="carousel">
+        <img src="imgs/worthless-boulder-dude-climbing.jpg" alt="a man climbing Worthless Boulder amidst bright green foliage">
+        <img src="imgs/worthless-boulder-routes-1.jpg" alt="the first photo in a series of two in which white lines indicate routes at Worthless Boulder">
+        <img src="imgs/worthless-boulder-routes-2.jpg" alt="the second photo in a series of two in which white lines indicate routes at Worthless Boulder">
+      </div>
+      <div class="buttons">
+        <button class="button prev">❮</button>
+        <button class="button next">❯</button>
+      </div>
     </div>
   </div>
 
-  <div class="dots">
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-  </div>
-
   <script>
-    let currentIndex = 0;
-    const images = document.querySelector('.carousel-images');
-    const dots = document.querySelectorAll('.dot');
+    document.querySelectorAll('.carousel-container').forEach(container => {
+      const carousel = container.querySelector('.carousel');
+      const images = container.querySelectorAll('.carousel img');
+      const prevButton = container.querySelector('.prev');
+      const nextButton = container.querySelector('.next');
+      let index = 0;
 
-    function showImage(index) {
-      images.style.transform = `translateX(-${index * 100}%)`;
-      dots.forEach(dot => dot.classList.remove('active'));
-      dots[index].classList.add('active');
-    }
+      function showImage(idx) {
+        const width = images[0].clientWidth;
+        carousel.style.transform = `translateX(-${idx * width}px)`;
+      }
 
-    function nextImage() {
-      currentIndex = (currentIndex + 1) % 4;
-      showImage(currentIndex);
-    }
+      prevButton.addEventListener('click', () => {
+        index = (index - 1 + images.length) % images.length;
+        showImage(index);
+      });
 
-    setInterval(nextImage, 3000); // Change image every 3 seconds
+      nextButton.addEventListener('click', () => {
+        index = (index + 1) % images.length;
+        showImage(index);
+      });
 
-    showImage(currentIndex); // Initialize with the first image
+      window.addEventListener('resize', () => showImage(index));
+    });
   </script>
-
-                    <div class="rat-rock-images">
-                        <img src="imgs/rat-rock-group-climbing.jpg" alt="a group of people watching someone ascend Rat Rock">
-                        <img src="imgs/rat-rock-routes.jpg" alt="series of colorful lines overlayed on Rat Rock face depicting routes">
-                    </div>
-                    <div class="worthless-boulder-images">
-                        <img src="imgs/worthless-boulder-dude-climbing.jpg" alt="a man climbing Worthless Boulder amidst bright green foliage">
-                        <img src="imgs/worthless-boulder-routes-1.jpg" alt="the first photo in a series of two in which white lines indicate routes at Worthless Boulder">
-                        <img src="imgs/worthless-boulder-routes-2.jpg" alt="the second photo in a series of two in which white lines indicate routes at Worthless Boulder">
-                    </div>
                     <p>
                         <div class="cat-rock-info">
                             <h3>Cat Rock</h3>
