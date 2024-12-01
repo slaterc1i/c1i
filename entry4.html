@@ -111,9 +111,15 @@
       let index = 0;
 
       function showImage(idx) {
-        const width = images[0].clientWidth;
+        const currentImage = images[idx];
+        const aspectRatio = currentImage.naturalHeight / currentImage.naturalWidth;
+        container.style.height = `${container.clientWidth * aspectRatio}px`;
+        const width = currentImage.clientWidth;
         carousel.style.transform = `translateX(-${idx * width}px)`;
       }
+
+      // Set initial height to match the first image
+      images[0].addEventListener('load', () => showImage(index));
 
       prevButton.addEventListener('click', () => {
         index = (index - 1 + images.length) % images.length;
