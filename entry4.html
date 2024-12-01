@@ -108,9 +108,9 @@
       </div>
     </div>
       <h3 class="carousel-title">Worthless Boulder</h3>
-  </div>
-  
-</div>
+    </div>
+   </div>
+                    
   <script>
     document.querySelectorAll('.carousel-container').forEach(container => {
       const carousel = container.querySelector('.carousel');
@@ -119,42 +119,29 @@
       const nextButton = container.querySelector('.next');
       let index = 0;
 
-       function updateCarouselHeight() {
-          const currentImage = images[index];
-          if (currentImage.naturalHeight && currentImage.naturalWidth) {
-            const aspectRatio = currentImage.naturalHeight / currentImage.naturalWidth;
-            container.style.height = `${container.clientWidth * aspectRatio}px`;
-          }
-        }
+      function showImage(idx) {
+        const currentImage = images[idx];
+        const aspectRatio = currentImage.naturalHeight / currentImage.naturalWidth;
+        container.style.height = `${container.clientWidth * aspectRatio}px`;
+        const width = currentImage.clientWidth;
+        carousel.style.transform = `translateX(-${idx * width}px)`;
+      }
 
-        function showImage(idx) {
-          const width = images[0].clientWidth;
-          carousel.style.transform = `translateX(-${idx * width}px)`;
-          updateCarouselHeight();
-        }
-        
-        images[0].addEventListener('load', () => showImage(index));
-    
-        images.forEach(image => {
-          image.addEventListener('load', () => {
-            updateCarouselHeight();
-            showImage(index);
-          });
-        });
+      // Set initial height to match the first image
+      images[0].addEventListener('load', () => showImage(index));
 
-        prevButton.addEventListener('click', () => {
-          index = (index - 1 + images.length) % images.length;
-          showImage(index);
-        });
-
-        nextButton.addEventListener('click', () => {
-          index = (index + 1) % images.length;
-          showImage(index);
-        });
-
-        window.addEventListener('resize', () => showImage(index));
+      prevButton.addEventListener('click', () => {
+        index = (index - 1 + images.length) % images.length;
+        showImage(index);
       });
-    };
+
+      nextButton.addEventListener('click', () => {
+        index = (index + 1) % images.length;
+        showImage(index);
+      });
+
+      window.addEventListener('resize', () => showImage(index));
+    });
   </script>
                     <p>
                         <div class="cat-rock-info">
